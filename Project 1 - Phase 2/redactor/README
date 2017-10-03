@@ -1,0 +1,140 @@
+----------
+|Redactor|
+----------
+
+Redactor is a system which takes set of html or plane text files as input. Detect the sensitive items like "dates","names","places","gender","addresses" etc and redact it with "*" symbol, basically replacing all such data with "*" symbol. Store the resultant files in the specified location given by the user in PDF format.
+It accepts the type of data to be redacted from command line arguments. 
+
+
+Below are the tags which represent type of data to be redacted or some functionalities redactor holds.
+
+--input
+-------
+Describes the type of files to be redacted and the location from where the files should be picked up. All "html" files should be in the current folder where as all "txt" files should be in "otherfiles/" folder under the current folder.
+
+--names
+-------
+Repesents all the names in the files should be redacted.
+
+--places
+--------
+Represents all the places in the files should be redacted.
+
+--dates
+-------
+Represents all the dates should be redacted from the files. System redacts almost all forms of date.
+
+--gender
+--------
+Represents all the dates in the files should be redacted.
+
+--addresses
+-----------
+Represents all the addresses should be redacted from the files. System redacts only US format addresses. Ex - "1003 E Brooks St, Apt A Norman, OK 73071"
+
+--phones
+--------
+Represents all the phones should be redacted from the files. System redacts almost all forms of phone numbers including appearance of ten digits continuously in files.
+
+--concept
+---------
+Takes one word or phrase that represents a concept or a theme. System finds the appearance of the word or it's synonyms and redact the whole sentence.
+
+--stats
+-------
+Stats tag could be either (stdout,stderr) or a file name. It prints some details about the redacted term on the console if the tag value is either (stdout,stderr). Prints the details in file if the tag value is file name.
+
+
+Example - 
+If the command given to execute the redactor oython file is "python3 redactor.py --input '*.html' --input 'otherfiles/*.txt' --names --dates --places --phones --concept 'kids' --output 'files/' --stats stderr"
+
+System will collect all html files from current folder and all text files from otherfiles/ folder. Redact names,dates,places and "kids" concept. Saves the resultant data as pdf files under files/ folder. 
+System also adds "redact_" term to the original file name for all the resultant pdf resultant files.
+
+Description of Functions
+------------------------
+def redact_dates(content,file_name):
+------------------------------------
+Function accepts content of the file and name of the file as parameters. Finds all the appearances of date in all forms in the file and redact it with the symbol "*". Returns the redacted text back.
+
+def redact_address(content,file_name):
+--------------------------------------
+Accepts content of the file and name of the file as input. Detects addresses (Only the standard US form) and redact. Returns the redacted content back.
+
+def redact_phones(content,file_name):
+-------------------------------------
+Accepts content of the file and name of the file as input. Detects phone numbers, redact and send back the result.
+
+def redact_concept(content,concept):
+------------------------------------
+Accepts the content of the file and concept keywword. Gets all the synonyms of the keyword. Redacts all the sentances those synonyms are part of.
+
+def redact_gender(content,file_name):
+-------------------------------------
+Accepts content of the file and name of the file as input. Detects genders, redact and send back the result.
+
+def redact_name_loc(content,n_o_l,file_name):
+---------------------------------------------
+Takes content of the file, file name and tag(either names or places) as input. Redact the names if tag is "--names" or places if tag is "--places". Returns the resultant text.
+
+def search_tag(argv,tag):
+-------------------------
+Function returns "1" if the tag is present in the command line arguments, else "0".
+
+
+
+
+------------
+|Unredactor|
+------------
+
+Unredactor is a program to predict the redacted names from a file. It takes the redacted file as input, where in names are redacted. Using the trained set of data, system will predict 5 matching words for each of the redacted term.
+
+The path for training set of data should be given as second command line argument. And the redacted file should be stored in the current folder, and that should be feeded as first command line argument.
+For example, if the command is python3 unredactor.py redacted_file.txt "temp_dir/*.txt".  redacted_file.txt  is the name of the redacted file and "temp_dir/*.txt" is the directory where all the training set of data are stored.
+
+Description of Functions
+------------------------
+def get_entity(text):
+---------------------
+Accepts the raw text of the training files one by one, extracts the entities(names) using nltk library and stores the entities in a list along with right and left words of each entity and sends it back.
+
+def create_features(glob_text,red_name_list):
+---------------------------------------------
+Fuction accepts the path from where data for training the machine should be extracted, this path was given as second command line argument. It also accepts the list of all the redacted terms from the redacted file, this file name was feeded as first command line argument as explained previously.
+
+def predict(red_name_list):
+--------------
+Accepts a list containing the redacted terms for each of which names will be predicted. Function uses the traning set and testing set of data, applies KNN classification algoritham on it to predict the 5 nearest names for each of the term in redacted name list.
+
+
+
+--------------
+|Installation|
+--------------
+
+Extract redactor_byak0000.tar.gz into the system by using "tar -xvf redactor_byak0000.tar.gz". It extracts the project in the current folder.
+To install the project package execute the command "pip3 install -r requirements.txt".
+After the installation, you would enter into "redactor" directory by executing "cd redactor/redactor". Where in you would find program files for redaction(redactor.py) and unredaction(unredactor.py) along with Stnaford NER package files(stanford-ner-2016-10-31),
+training set data folder (temp_dir), text file folder(otherfiles) which will be fed to redactor for redaction, redacted text file fed to input for the unredactor as input through first command line argument.
+
+System Uses Stanford NER to detect names and places. Follow the below commands to extract the required files helpful for creating a Stanford NER object used in the "redactor.py".
+
+Go to "redactor/redactor" folder and download the Stanford NER package by giving the command as below
+"wget https://nlp.stanford.edu/software/stanford-ner-2016-10-31.zip"
+
+Unzip the package using below command
+"unzip stanford-ner-2016-10-31.zip"
+
+Most importantly, make sure to have the unzipped Stanford NER folder in both "redactor" directories. One refers to pytests and other to "redactor.py".
+
+
+-----------
+|PyTesting|
+-----------
+
+To execute the pytests, come to the parent "redactor" directory where "setup.py" resides. Execute the below command to run all the tests
+
+"python3 setup.py test"
+
+System takes average of 150 sec to complete all the pytests.

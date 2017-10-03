@@ -1,0 +1,40 @@
+Description
+-----------
+The program file "jaccard_co.py" prints the descending order Jaccard Coefficient values for thorn separated file "discussions.thorn".
+All the lines in "discussions.thorn" which appear before the thorn character "þ" are stored as a list elements. Further these list elements are used to pass arguments to the 
+unix diff command. The command will produce the difference between the passed list elements, the output will be further processed to find the Jaccard Coefficient. Likewise, each element 
+of the list is compared to each other elements in the list to find the respective Jaccard Coefficient values.
+If the output shows "1,2,0.564877", it means 0.564877 is the Jaccard Coefficient value for comparison made on 1 and 2 elements of the array.
+
+
+Installing
+----------
+Use the below command to unzip the file uploaded
+"tar xvzf pramod_duplicate_discussion.tar.gz -C <path>"
+
+Above command will unzip a folder Pramod_Duplicate_Detection, in which "jaccard_co.py" and "discussions.thorn" files will be stored.
+
+To execute the progrram file, run the below command
+"python3 jaccard_co.py"
+
+This will print all the Jaccard Coefficient values for each of the comparisons made.
+
+
+Jaccard Coefficient
+-------------------
+j_co = (A intersection B) / (A union B)
+
+For example if A = "ab" and B = "bb"
+j_co = (1) / (3) = 0.333333
+
+Ouput for the above comparison looks like below if "ab" was 1st element and "bb" was 2nd
+[1,2,0.33333]
+
+Also the program takes care to print the values in decending order.
+i.e j_co(bb,bb) > j_co(ab,bb) > j_co(aa,bb);
+
+
+Author
+------
+Pramod Aravind Byakod
+Sooner ID - 113436879

@@ -1,0 +1,6 @@
+README
+setup.py
+CS_5970_Activity_Police_Report_Extraction.egg-info/PKG-INFO
+CS_5970_Activity_Police_Report_Extraction.egg-info/SOURCES.txt
+CS_5970_Activity_Police_Report_Extraction.egg-info/dependency_links.txt
+CS_5970_Activity_Police_Report_Extraction.egg-info/top_level.txt

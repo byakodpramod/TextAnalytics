@@ -1,0 +1,48 @@
+from __future__ import division
+import codecs
+import json
+import nltk
+import re
+from nltk import sent_tokenize
+from nltk import word_tokenize
+import numpy as np
+
+
+def assign_index(len_1,len_2,e_d_m):
+    for i in range(0,len_1+1):
+        e_d_m[i][0]=i
+    for j in range(0,len_2+1):
+        e_d_m[0][j]=j
+    return e_d_m
+
+
+
+def find_distance(len_1,len_2,e_d_m,str_1,str_2):
+    k = 1
+    while(k <= len_1):
+         l = 1
+         while(l <= len_2):
+              if str_1[k-1]==str_2[l-1]:
+                 e_d_m[k][l] = e_d_m[k-1][l-1]
+              else:
+                  e_d_m[k][l]= min(e_d_m[k-1][l],e_d_m[k][l-1],e_d_m[k-1][l-1])+1
+              l=l+1
+         k=k+1
+    print_matrix(e_d_m,str_1,str_2)
+    return e_d_m[k-1][l-1]
+
+
+
+def print_matrix(e_d_m,str_1,str_2):
+    print("Dynamic Programming Matrix to find minimum edit distance for words %s and %s is" %(str_1,str_2));
+    print(np.matrix(e_d_m))
+
+
+
+def distance(word_1,word_2):
+    len_word1 = len(word_1)
+    len_word2 = len(word_2)
+    edit_dist_matrix = [[0]*(len_word2+1) for i in range(len_word1+1)]
+    edit_dist_matrix = assign_index(len_word1,len_word2,edit_dist_matrix)
+    edit_dis = find_distance(len_word1,len_word2,edit_dist_matrix,word_1,word_2)
+    print ("Minimum Edit Distance is %d"  %(edit_dis));

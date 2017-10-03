@@ -1,0 +1,119 @@
+#Pramod Aravind Byakod
+#Text Analytics (CS 5970) Assignment 1
+#Sooner ID – 113436879
+
+#There are separate python codes for each of the assignment questions, kindly notice the question labels 
+
+#Question 1
+#A)
+#!/usr/bin/python
+import re
+with open("twitter.txt") as f:
+    for line in f:
+        match = re.search('[T t]witter', line)
+        if match:
+           print (line)
+
+#B)
+#!/usr/bin/python
+import re
+with open("result.txt") as f:
+    for line in f:
+        rep = re.sub(r'[T t]witter', "MYSTARTUP", line)
+        print (rep)
+
+#C)
+#r’\d+(.+)\d{5}’
+
+#D)
+#r’(.+):’
+
+#Question 2
+
+#!/usr/bin/python
+import re
+with open("hanuk.txt") as f:
+    for line in f:
+        match = re.search('[C H X]h*a(n|nn)u(kk|k|q)*ah*', line)
+        if match:
+           print (line)
+
+
+
+
+
+
+
+#Question 3
+
+#!/usr/bin/python
+from __future__ import division
+import codecs
+import json
+import nltk
+import re
+from nltk import sent_tokenize
+from nltk import word_tokenize
+sen_num=0
+with open("twitter.txt") as f:
+    for line in f:
+        sen_num = sen_num+1;
+        token = str(sent_tokenize(line,language='english'));
+        sentence = re.sub(r'(\',)',"",token)
+        sentence = sentence.replace("[","")
+        sentence = sentence.replace("]","")
+        sentence = sentence.replace("'","")
+        words = sentence.split()
+        if len(words) == 0:
+           average = 0
+        else:
+           average = sum(len(word) for word in words)/len(words)
+        print("%dþ%sþ%f" % (sen_num,sentence,average));
+
+
+#Question 4
+
+from __future__ import division
+import codecs
+import json
+import nltk
+from nltk import sent_tokenize
+from nltk import word_tokenize
+print ("<document>");
+#output of question 3 stored in file sent.csv
+with open("sent.csv") as f:
+    for line in f:
+        sentence = (line.split('þ'));
+        sentence_strip = line.split('þ')[2].strip();
+        print ("\t<sentence id = %s>" %(sentence[0]));
+        print ("\t\t<text>%s</text>" %(sentence[1]));
+        print ("\t\t<avg>%s</avg>" %(sentence_strip));
+        print ("\t</sentence>");
+print ("</document>");
+
+
+#Question 5
+
+from __future__ import division
+import codecs
+import json
+import nltk
+from nltk import sent_tokenize
+from nltk import word_tokenize
+print ("{")
+print ("\t\"documents\":");
+print ("\t{")
+print ("\t\t\"sentences\":");
+print ("\t\t{")
+with open("sent.csv") as f:
+    for line in f:
+        sentence = (line.split('þ'));
+        sentence_strip = line.split('þ')[2].strip();
+        print ("\t\t\t{")
+        print ("\t\t\t\t\"Text\" : \"%s\"" %(sentence[1]));
+        print ("\t\t\t\t\"Avg\" : %s" %(sentence_strip));
+        print ("\t\t\t\tID : %s" %(sentence[0]));
+        print ("\t\t\t}");
+print ("\t\t}");
+print ("\t}");
+print ("}");

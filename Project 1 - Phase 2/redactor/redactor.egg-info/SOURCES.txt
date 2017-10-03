@@ -1,0 +1,10 @@
+README
+setup.cfg
+setup.py
+redactor/__init__.py
+redactor/redactor.py
+redactor/unredactor.py
+redactor.egg-info/PKG-INFO
+redactor.egg-info/SOURCES.txt
+redactor.egg-info/dependency_links.txt
+redactor.egg-info/top_level.txt

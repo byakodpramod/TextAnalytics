@@ -1,0 +1,64 @@
+Project Description
+-------------------
+System is designed to predict the top 5 matching Cuisines for the ingredients desired by the user. User has to pass the ingredients in the command line arguments, the resultant matching cuisines will be printed on the console with its ID and the cuisine type.
+
+Project is basically devided into two phases, Phase one to visualize the data and Phase two to predict the matching cuisines.
+---------
+|Phase 1|
+---------
+Phase 1 source code is named "project2_phase1.ipynb". This file should be run on Jupyter Notebook.
+Initially system reads the train data set from "yummly.json" file and creates 2 lists and 1 dictionary as explained below
+-> A list of all unique ingredients
+-> A list of all unique Cuisines
+-> A dictionary containing cuisines as keys and a list of all respective ingredients as values.
+
+Having all the above data, system then forms a matrix with unique ingredients along rows and unique cuisines along coloumns. If "i" represents cuisine and "j" represents ingredinet and matrix named "matrix", matrix(i,j) is the value number of times "j"th ingredinet repeated for "i"th cuisine in the training data set.
+Matrix is then sparsed and vectorized using tfidf vectorizer. Resultant tfidf values are sent to PCA to reduce the data to visualize in 2-dimensional space.
+KMeans algorithm is applied to cluster the PCA output. So that all cuisines are clustered with respect to number of times ingredinets repeated in the training data set.
+Used matplotlib to visualize the data. Sample visualisation is added in the parent directory with the name "project2_phase1_output.png".
+Each circle in the visualisation represents a cuisine. Circles intersect if the ingredients for those cuisines are in common.
+
+Functions Description
+---------------------
+def create_kmeans_labels(json):
+-------------------------------
+Function takes training data set as input parameter, create matrix, vectorize and cluster them using KMeans algorithm and returns the labels of clustered data.
+
+def main():
+-----------
+Function reads data from "yummly.json", calls "create_kmeans_labels" to get the labels and outputs the data visualisation plot using matplotlib functions.
+
+---------
+|Phase 2|
+---------
+Phase 2 source code is named "projet2_phase2.py". This file can be executed on GPEL machines or any other UNIX servers.
+Similar to Phase 1 source code, phase 2 code reads the "yummly.json" training data set and creates 2 lists and 1 dictiory. 
+They are:
+-> A list of all cuisine ID's
+-> A list of all unique Ingredients
+-> A dictionary containing cuisine ID's as keys and a list of all respective ingredients as values.
+
+System then forms a matrix similar to Phase 1 having all the unique ingredients along rows and cuisine ID's along coloumns. matrix(i,j) is the value number of times "j"th ingredinet repeated for "i"th cuisine ID in the training data set.
+
+The matrix is vectorized using tfidf vectorizer and then passed to KNN algorithm to predict the top 5 matching cuisine ID's. The same will be printed on the console with cuisine ID's respective cuisine type.
+
+Function Description
+--------------------
+def predict_cuisines(json,arg_list):
+------------------------------------
+Function takes training data set and list of ingredients passed by the user as commnad line arguments as input parameters, creates matrix, vectorize and predict the top 5 matching cuisine IDs using KNN algorithm.
+
+def main():
+-----------
+Function reads data from "yummly.json", calls "predict_cuisines" to print the predictions.
+
+
+Installation and Execution
+--------------------------
+Phase 1 code should be executed on Jupyter Notebook having "yummly.json" file in the home directory where the source code "project2_phase1.ipynb" is present.
+
+Phase 2 code should be executed on GPEL machine or any UNIX platform by giving the below command.
+"python3 project2_phase2.py <ingredinets>"
+For example :-> python3 project2_phase2.py "romaine lettuce" "black olives" "grape tomatoes" "garlic" "pepper" "purple onion" "seasoning" "garbanzo beans" "feta cheese crumbles"
+
+Make sure to have the training data set "yummly.json" in the home directory where the source code resides.

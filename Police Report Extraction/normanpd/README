@@ -1,0 +1,40 @@
+Police Report Extraction
+------------------------
+Project downloads the incidents,which are in PDF files,from the Norman Police website "http://normanpd.normanok.gov/content/daily-activity" and inserts them into a sqlite table named
+"incidents" by creating a database "normanpd.db" and prints total number of rows in the table with 5 random rows on the output stream(console).
+This project takes care of problem of dependencies by creating a package called "normanpd".
+
+Description of Functions
+------------------------
+fetchincidents() - This function connects to the norman police website with request.urlopen function and using regular expression extracts the URLs of only the incident pfds. Those URLs 
+will be stored in a list and returns the list.
+
+extractincidents() - Calls fetchincidents() function to get the incident pdf URLs. Using PyPDF2 library,dowmloads all the pdfs one by one and extract the pdf data using 
+PyPDF2.PdfFileReader.extractText function on a temprory name "test.pdf" and stores into a text file "incidents.txt", which will be useful in the next functions. Removes all the junk data 
+and keeps only the incidents in file "incidents.txt". Stores each of the lines in text file as a list element in a list and returns the same.
+
+createdb() - Function creates a database called "normanpd.db" in sqlite and creates a tables called "incidents" in it. The columns in the databse are 
+1. ID
+2. DATA/TIME
+3. INCIDENT NUMBER
+4. LOCATION
+5. NATURE
+6. ORI
+As names of the columns give the meaning, ID is a integer value and remaining all are text type.
+
+populatedb(incidents) - Connects to the "normanpd.db" database and inserts the incidents received as a function parameter into the table "incidents" using below sql command.
+INSERT INTO incidents VALUES ('ID','DATA/TIME','INCIDENT NUMBERs','LOCATION','NATURE','ORI')
+This function also takes care of special conditions like, print null for LOCATION and NATURE columns for incidents with no respective data and handle the condition where the LOCATION 
+coloumn is spread into two lines in incidents pdfs.
+
+status(db) - Accepts the databse name as the parameter and connects to it. Print total number of rows in the table with the help of sql command "SELECT COUNT(*) FROM incidents".
+Also prints on the console five random rows from the table with the help of sql command "SELECT * FROM incidents ORDER BY random() LIMIT 5".
+
+Installing
+----------
+Extract normanpd_byak0000.tar.gz into the system by using "tar xvzf normanpd_byak0000.tar.gz -C <path>". Path is the path where you want to install the project.
+To install the package execute the command "pip install <path>". Path should be the path of "normanpd" directory.
+After the installation, you would enter into "normanpd" directory by executing "cd normanpd". There you will find a file called "main.py", which will have function calls each of the 
+funtions described above. 
+Execute it with the command "python3 main.py". This will give you the output. Before executing the main.py. make sure that "normanpd.db" is deleted because main.py file will the db 
+everytime it's ran.
